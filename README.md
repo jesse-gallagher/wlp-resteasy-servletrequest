@@ -4,9 +4,10 @@ This project demonstrates an exception that can occur when using Open Liberty 22
 
 Specifically, the trouble occurs when:
 
-* An HttpServletRequest object that is stored in a CDI @RequestScoped bean by a pre-matching a `ContainerRequestFilter`
+* A pre-matching `ContainerRequestFilter` retrieves the current `HttpServletRequest` via `@Context` injection
+* It stores the request in a CDI `@RequestScoped` bean
 * It is then injected into a `MessageBodyWriter` by way of a custom `@JaxRsContext` annotation that allows for `@Context HttpServletRequest req`
-* That request is then passed in to a `RequestDispatcher` looked up by the writer
+* That request is then passed in to a `RequestDispatcher` looked up by the writer via `RequestDispatcher rd = context.getRequestDispatcher("/WEB-INF/hello.jsp")`
 
 This manifests in a stack trace like:
 
@@ -23,7 +24,7 @@ Caused by: java.lang.RuntimeException: SRV.8.2: RequestWrapper objects must exte
   ... 1 more
 ````
 
-The specific trouble is that the `HttpServletRequest` instance provided to the `MessageBodyWriter` in this case is a Proxy object created by RESTEasy, and is not an `HttpServletRequestWrapper`. WLP's `ServletUtil` then tries to unwrap it down specifically to an `IExtendedRequest` instance, but it can't.
+The specific trouble looks to be that WLP's `ServletUtil` then to unwrap the request down specifically to an `IExtendedRequest` instance, but it can't do so with the Proxy object provided by RESTEasy.
 
 ### Reproduction
 
