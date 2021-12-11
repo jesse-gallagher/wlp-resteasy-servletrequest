@@ -39,8 +39,8 @@ public class CustomClassWriter implements MessageBodyWriter<CustomClass> {
   @Override
   public void writeTo(CustomClass t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
       MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
-//    HttpServletRequest req = jaxrsContext.produceHttpServletRequest();
-//    HttpServletResponse resp = jaxrsContext.produceHttpServletResponse();
+//    HttpServletRequest req = jaxrsContext.getRequest();
+//    HttpServletResponse resp = jaxrsContext.getResponse();
     ServletContext context = req.getServletContext();
     
     
