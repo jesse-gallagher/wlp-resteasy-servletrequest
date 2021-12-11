@@ -1,7 +1,5 @@
 package com.example;
 
-import java.util.Objects;
-
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,15 +14,15 @@ public class RequestStashingBean {
   @Produces
   @JaxRsContext
   @RequestScoped
-  public HttpServletRequest produceHttpServletRequest() {
-      return Objects.requireNonNull(req, "Cannot produce HttpServletRequest");
+  public HttpServletRequest getRequest() {
+      return req;
   }
 
   @Produces
   @JaxRsContext
   @RequestScoped
-  public HttpServletResponse produceHttpServletResponse() {
-      return Objects.requireNonNull(resp, "Cannot produce HttpServletResponse");
+  public HttpServletResponse getResponse() {
+      return resp;
   }
   
   public void setReq(HttpServletRequest req) {

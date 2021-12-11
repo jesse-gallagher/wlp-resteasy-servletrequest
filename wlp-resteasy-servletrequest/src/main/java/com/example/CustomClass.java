@@ -1,9 +1,7 @@
 package com.example;
 
+/**
+ * This class is arbitrary and exists only to trigger {@link CustomClassWriter}.
+ */
 public class CustomClass {
-
-  public CustomClass() {
-    // TODO Auto-generated constructor stub
-  }
-
 }

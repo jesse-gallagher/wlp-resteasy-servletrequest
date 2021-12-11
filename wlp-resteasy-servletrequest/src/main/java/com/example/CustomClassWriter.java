@@ -21,13 +21,15 @@ import jakarta.ws.rs.ext.MessageBodyWriter;
 
 @Produces(MediaType.TEXT_PLAIN)
 public class CustomClassWriter implements MessageBodyWriter<CustomClass> {
-
-
   @Context
   private HttpServletRequest req;
 
   @Context
   private HttpServletResponse resp;
+
+  // In this case, but not others, retrieving the request/response via the bean
+  //   injected this way will avoid the exception
+//  @Inject RequestStashingBean jaxrsContext;
 
   @Override
   public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
@@ -37,8 +39,10 @@ public class CustomClassWriter implements MessageBodyWriter<CustomClass> {
   @Override
   public void writeTo(CustomClass t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
       MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
+//    HttpServletRequest req = jaxrsContext.produceHttpServletRequest();
+//    HttpServletResponse resp = jaxrsContext.produceHttpServletResponse();
     ServletContext context = req.getServletContext();
-    System.out.println("req: " + req.getClass());
+    
     
     RequestDispatcher rd = context.getRequestDispatcher("/WEB-INF/hello.jsp");
     try {
